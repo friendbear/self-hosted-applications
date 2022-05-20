@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  ghost:
+    image: arm64v8/ghost
+    restart: always
+    ports:
+      - 8080:2368
+    environment:
+      # see https://ghost.org/dos/config/#configuration-options
+      database__client: mysql
+      database__connection_host: db
+      database_connection__user: root
+      database__connection__password: example
+      database__connection__database: ghost
+
+      # change me
+      url: http://localhost:8080
+      # NODE_ENV: development
+  db:
+    image: arm64v8/mysql:8-oracle
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+
+

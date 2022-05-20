@@ -1,0 +1,7 @@
+nginx-proxy-manager/data
+nginx-proxy-manager/logs
+nginx-proxy-manager/letsencrypt
+nginx-proxy-manager/custom_ssl
+nginx-proxy-manager/nginx
+
+
