@@ -3,5 +3,5 @@ nginx-proxy-manager/logs
 nginx-proxy-manager/letsencrypt
 nginx-proxy-manager/custom_ssl
 nginx-proxy-manager/nginx
-
+pi-holle/etc-*/
 
