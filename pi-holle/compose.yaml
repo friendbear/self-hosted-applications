@@ -10,8 +10,8 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
       - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
-      - "80:80/tcp"
-      - "443:443/tcp"
+      - "8082:80/tcp"
+      - "10443:443/tcp"
     dns:
       - "127.0.0.1"
       - "1.1.1.1"
