@@ -7,19 +7,23 @@ RUN apt-get update && \
     build-essential \
     cmake \
     git \
+    qt5-default \
+    libqt5core5a \
+    libqt5gui5 \
+    libqt5widgets5 \
     python3-pip \
-    libboost-all-dev \
     && rm -rf /var/lib/apt/lists/*
 
+
 # RTIMU ライブラリのインストール
-RUN git clone https://github.com/RPi-Distro/RTIMULib.git /opt/RTIMULib && \
-    cd /opt/RTIMULib && \
+RUN git clone https://github.com/RPi-Distro/RTIMULib.git /opt/RTIMULib || echo "Failed to clone RTIMULib repository" && \
+    cd /opt/RTIMULib/Linux && \
     mkdir build && \
     cd build && \
     cmake .. && \
-    make && \
-    make install && \
-    ldconfig
+    make -j4 && \
+    sudo make install && \
+    sudo ldconfig
 
 # Pythonライブラリのインストール
 COPY requirements.txt .
