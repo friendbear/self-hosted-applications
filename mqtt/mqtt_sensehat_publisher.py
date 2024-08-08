@@ -3,6 +3,8 @@ import time
 import json
 import paho.mqtt.client as mqtt
 from sense_hat import SenseHat
+import daemon
+import lockfile
 
 # 環境変数からMQTT設定を取得
 MQTT_BROKER = os.getenv("MQTT_BROKER", "localhost")
@@ -55,8 +57,14 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Failed to connect to MQTT broker: {e}")
         exit(1)
-    
-    client.loop_start()
-    publish_sensor_data()
 
+    client.loop_start()
+
+    # デーモンとして実行
+    with daemon.DaemonContext(
+        working_directory='/',
+        umask=0o002,
+        pidfile=lockfile.FileLock('/tmp/mqtt_sensehat_publisher.pid')
+    ):
+        publish_sensor_data()
 
