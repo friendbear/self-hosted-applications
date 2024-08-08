@@ -1,3 +1,6 @@
+
+DEBIAN_FRONTEND=noninteractive
+
 docker build -t my-sensehat-mqtt .
 
 docker run --device /dev/i2c-1 \
