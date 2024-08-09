@@ -3,19 +3,23 @@ import time
 import json
 import paho.mqtt.client as mqtt
 from sense_hat import SenseHat
-import daemon
-import lockfile
 
 # 環境変数からMQTT設定を取得
 MQTT_BROKER = os.getenv("MQTT_BROKER", "localhost")
 MQTT_PORT = int(os.getenv("MQTT_PORT", 1883))
 MQTT_TOPIC_PREFIX = os.getenv("MQTT_TOPIC_PREFIX", "sensehat/")
+MQTT_USERNAME = os.getenv("MQTT_USERNAME")
+MQTT_PASSWORD = os.getenv("MQTT_PASSWORD")
 
 # Sense HATの設定
 sense = SenseHat()
 
 # MQTTクライアントの初期化
 client = mqtt.Client()
+
+# MQTTの認証情報を設定
+if MQTT_USERNAME and MQTT_PASSWORD:
+    client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
@@ -59,12 +63,5 @@ if __name__ == "__main__":
         exit(1)
 
     client.loop_start()
-
-    # デーモンとして実行
-    with daemon.DaemonContext(
-        working_directory='/',
-        umask=0o002,
-        pidfile=lockfile.FileLock('/tmp/mqtt_sensehat_publisher.pid')
-    ):
-        publish_sensor_data()
+    publish_sensor_data()
 
